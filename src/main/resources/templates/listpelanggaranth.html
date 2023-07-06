@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www/thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <link rel="stylesheet"
+          href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+          crossorigin="anonymous">
+</head>
+<body style="align:center">
+<div class="container my-2">
+    <br>
+    <br>
+    <br>
+    <h3>Daftar Pelanggaran </h3>
+    <table id="table" style="margin:0 auto; border-color: cadetblue" border="3" class = "table table-striped table-responsive-md">
+        <thead>
+        <tr style="background-color: paleturquoise">
+            <td>Nama</td>
+            <td>Jam Minus</td>
+            <td>Edit</td>
+            <td>Delete</td>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="pelanggarans: ${listPelanggaran}">
+            <td th:text="${pelanggarans.nama}"></td>
+            <td th:text="${pelanggarans.jam_minus}"></td>
+            <td><a class="btn btn-info" th:href="@{/edit/{id}(id=${pelanggarans.getId()})}" >Edit</a></td>
+            <td><a class="btn btn-danger" th:href="@{/delete/{id}(id=${pelanggarans.getId()})}" >Delete</a></td>
+        </tr>
+        </tbody>
+    </table>
+    <br>
+    <a class="btn btn-warning" href="http://localhost:8080/pelanggarans/report/html">Export</a>
+    &nbsp; &nbsp; &nbsp;
+    <button type="button" class="btn btn-danger" onclick="cancelUpdate()">Kembali</button>
+</div>
+</body>
+<script>
+    function cancelUpdate() {
+        window.location.href = "/index.html";
+    }
+</script>
+</html>
