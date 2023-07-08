@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 import polman.astra.ac.id.model.Pengguna;
 import polman.astra.ac.id.repository.PenggunaRepository;
 
+import java.util.List;
+
 @Service
 public class PenggunaService {
     @Autowired
@@ -21,6 +23,11 @@ public class PenggunaService {
 
     public Pengguna getPenggunaByNama(String nama){
         Pengguna Pengguna = penggunaRepository.getPenggunaByNama(nama);
+        return Pengguna;
+    }
+
+    public List<Pengguna> getAllPengguna(){
+        List<Pengguna> Pengguna = penggunaRepository.getAllPengguna();
         return Pengguna;
     }
 
