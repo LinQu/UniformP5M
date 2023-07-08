@@ -1,11 +1,10 @@
 package polman.astra.ac.id.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import polman.astra.ac.id.model.Karyawan;
-import polman.astra.ac.id.model.LoginResponse;
+import polman.astra.ac.id.model.response.LoginResponse;
 import polman.astra.ac.id.services.KaryawanService;
 
 

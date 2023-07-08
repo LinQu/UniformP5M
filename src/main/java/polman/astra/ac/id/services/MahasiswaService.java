@@ -8,7 +8,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-import polman.astra.ac.id.model.AccessTokenResponse;
+import polman.astra.ac.id.model.response.AccessTokenResponse;
 import polman.astra.ac.id.model.Mahasiswa;
 
 @Service

@@ -1,10 +1,12 @@
 package polman.astra.ac.id.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import polman.astra.ac.id.model.Pengguna;
+import polman.astra.ac.id.model.response.PenggunaResponse;
 import polman.astra.ac.id.services.PenggunaService;
 
 import javax.servlet.http.HttpServletResponse;
@@ -21,7 +23,18 @@ public class PenggunaController {
     }
 
     @GetMapping("/getPenggunaByNama")
-    public Pengguna getPenggunaByNama(@RequestParam(value = "nama") String nama){
-        return penggunaService.getPenggunaByNama(nama);
+    public ResponseEntity<PenggunaResponse> getPenggunaByNama(@RequestParam(value = "nama") String nama){
+        Pengguna pengguna = penggunaService.getPenggunaByNama(nama);
+        PenggunaResponse penggunaResponse = new PenggunaResponse();
+        try {
+            penggunaResponse.setmPengguna(pengguna);
+            penggunaResponse.setMessage("Login Berhasil");
+            penggunaResponse.setStatus(200);
+        }catch (Exception e){
+            penggunaResponse.setmPengguna(null);
+            penggunaResponse.setMessage("Akun tidak ditemukan");
+            penggunaResponse.setStatus(404);
+        }
+        return ResponseEntity.ok(penggunaResponse);
     }
 }

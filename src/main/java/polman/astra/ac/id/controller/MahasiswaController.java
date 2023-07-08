@@ -3,7 +3,7 @@ package polman.astra.ac.id.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import polman.astra.ac.id.model.LoginMahasiswaResponse;
+import polman.astra.ac.id.model.response.LoginMahasiswaResponse;
 import polman.astra.ac.id.model.Mahasiswa;
 import polman.astra.ac.id.services.MahasiswaService;
 

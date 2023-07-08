@@ -1,4 +1,4 @@
-package polman.astra.ac.id.model;
+package polman.astra.ac.id.model.response;
 
 public class AccessTokenResponse {
     private String access_token;

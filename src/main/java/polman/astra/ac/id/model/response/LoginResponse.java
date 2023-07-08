@@ -1,6 +1,7 @@
-package polman.astra.ac.id.model;
+package polman.astra.ac.id.model.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import polman.astra.ac.id.model.Karyawan;
 
 public class LoginResponse {
     @JsonProperty("data")
