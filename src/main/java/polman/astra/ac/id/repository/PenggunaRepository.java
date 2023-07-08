@@ -9,4 +9,7 @@ import java.util.List;
 public interface PenggunaRepository extends CrudRepository<Pengguna, Integer> {
     @Query(value = "SELECT * FROM Pengguna",nativeQuery = true)
     public List<Pengguna> getAllPengguna();
+
+    @Query(value = "SELECT * FROM Pengguna WHERE nama_pengguna=?1",nativeQuery = true)
+    public Pengguna getPenggunaByNama(String nama);
 }
