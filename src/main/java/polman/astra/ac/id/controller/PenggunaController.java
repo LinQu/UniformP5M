@@ -28,7 +28,7 @@ public class PenggunaController {
         PenggunaResponse penggunaResponse = new PenggunaResponse();
         try {
             penggunaResponse.setmPengguna(pengguna);
-            penggunaResponse.setMessage("Login Berhasil");
+            penggunaResponse.setMessage("Ambil Data Berhasil");
             penggunaResponse.setStatus(200);
         }catch (Exception e){
             penggunaResponse.setmPengguna(null);
