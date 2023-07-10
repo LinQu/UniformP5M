@@ -3,6 +3,7 @@ package polman.astra.ac.id.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import polman.astra.ac.id.model.Pengguna;
@@ -22,7 +23,7 @@ public class PenggunaController {
         return pengguna;
     }
 
-    @GetMapping("/getPenggunaByNama")
+    @PostMapping("/getPenggunaByNama")
     public ResponseEntity<PenggunaResponse> getPenggunaByNama(@RequestParam(value = "nama") String nama){
         Pengguna pengguna = penggunaService.getPenggunaByNama(nama);
         PenggunaResponse penggunaResponse = new PenggunaResponse();
