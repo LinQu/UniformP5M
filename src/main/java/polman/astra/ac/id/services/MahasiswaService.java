@@ -3,13 +3,16 @@ package polman.astra.ac.id.services;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import polman.astra.ac.id.model.response.AccessTokenResponse;
 import polman.astra.ac.id.model.Mahasiswa;
+
+import java.util.Arrays;
+import java.util.List;
 
 @Service
 public class MahasiswaService {
@@ -47,7 +50,7 @@ public class MahasiswaService {
         return null;
     }
 
-    public Mahasiswa[] getListMahasiswaBykelas(String kelas) {
+    public List<Mahasiswa> getListMahasiswaBykelas(String kelas) {
         // Mendapatkan akses token
         String accessToken = getAccessToken();
 
@@ -56,11 +59,18 @@ public class MahasiswaService {
         headers.set("Authorization", "Bearer " + accessToken);
         headers.setContentType(MediaType.APPLICATION_JSON);
         // Membuat permintaan HTTP GET dengan header
-        String url = "https://api.polytechnic.astra.ac.id:2906/api_dev/SIA/getListMahasiswaByKelas?kelas=" + kelas;
+        String url = "https://api.polytechnic.astra.ac.id:2906/api_dev/efcc359990d14328fda74beb65088ef9660ca17e/SIA/getListMahasiswaByKelas?kelas=" + kelas;
         HttpEntity<String> requestEntity = new HttpEntity<>(headers);
 
+        // Mengirim permintaan GET dengan header
+        ResponseEntity<String> responseEntity = restTemplate.exchange(
+                url,
+                HttpMethod.GET,
+                requestEntity,
+                String.class
+        );
         // Mengirim permintaan HTTP GET ke API
-        String jsonResponse = restTemplate.getForObject(url, String.class,headers);
+        String jsonResponse = responseEntity.getBody();
         try {
             JsonNode root = objectMapper.readTree(jsonResponse);
             if (root.isArray()) {
@@ -71,7 +81,7 @@ public class MahasiswaService {
                     String kelasModified = kelasMahasiswa.substring(kelasMahasiswa.length() - 2);
                     mahasiswa.setKelas(kelasModified);
                 }
-                return mahasiswaArray;
+                return Arrays.asList(mahasiswaArray);
             }
         } catch (JsonProcessingException e) {
 
@@ -81,20 +91,31 @@ public class MahasiswaService {
     }
 
     private String getAccessToken() {
+        // Menyiapkan permintaan untuk mengambil akses token
+        String url = "https://api.polytechnic.astra.ac.id:2906/api_dev/AccessToken/Get";
         // Membuat header untuk permintaan akses token
         HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+        //headers.setBasicAuth(CLIENT_ID, CLIENT_SECRET); // Mengatur client_id dan client_secret sesuai kebutuhan
 
-        // Membuat permintaan POST untuk mendapatkan akses token
-        String url = "https://api.polytechnic.astra.ac.id:2906/api_dev/AccessToken/Get";
-        HttpEntity<String> requestEntity = new HttpEntity<>(headers);
+        MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
+        body.add("grant_type", "password");
+        body.add("username", "asd");
+        body.add("password", "asd");
 
-        // Mengirim permintaan POST ke API untuk mendapatkan akses token
+        HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<>(body, headers);
+
+        // Mengirim permintaan POST untuk mendapatkan akses token
+//        ResponseEntity<AccessTokenResponse> responseEntity = restTemplate.exchange(
+//                url,
+//                HttpMethod.POST,
+//                requestEntity,
+//                AccessTokenResponse.class
+//        );
         AccessTokenResponse response = restTemplate.postForObject(url, requestEntity, AccessTokenResponse.class);
         if (response != null) {
             return response.getAccess_token();
         }
-
         return null;
     }
 }
