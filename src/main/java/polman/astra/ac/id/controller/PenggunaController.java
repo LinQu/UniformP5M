@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import polman.astra.ac.id.model.Pengguna;
+import polman.astra.ac.id.model.response.ListPenggunaResponse;
 import polman.astra.ac.id.model.response.PenggunaResponse;
 import polman.astra.ac.id.services.PenggunaService;
 
@@ -18,9 +19,19 @@ public class PenggunaController {
     @Autowired
     PenggunaService penggunaService;
     @GetMapping("/getPengguna")
-    public List<Pengguna> getPengguna(HttpServletResponse response){
+    public ResponseEntity<ListPenggunaResponse> getPengguna(HttpServletResponse response){
         List<Pengguna> pengguna = penggunaService.getAllPengguna();
-        return pengguna;
+        ListPenggunaResponse listPenggunaResponse = new ListPenggunaResponse();
+        try{
+            listPenggunaResponse.setmPengguna(pengguna);
+            listPenggunaResponse.setMessage("Ambil Data Berhasil");
+            listPenggunaResponse.setStatus(200);
+        }catch (Exception e){
+            listPenggunaResponse.setmPengguna(null);
+            listPenggunaResponse.setMessage("Data Kosong");
+            listPenggunaResponse.setStatus(404);
+        }
+        return ResponseEntity.ok(listPenggunaResponse);
     }
 
     @PostMapping("/getPenggunaByNama")
