@@ -2,10 +2,7 @@ package polman.astra.ac.id.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import polman.astra.ac.id.model.Pengguna;
 import polman.astra.ac.id.model.response.ListPenggunaResponse;
 import polman.astra.ac.id.model.response.PenggunaResponse;
@@ -34,6 +31,29 @@ public class PenggunaController {
         return ResponseEntity.ok(listPenggunaResponse);
     }
 
+    @PostMapping("/savePengguna")
+    public ResponseEntity<PenggunaResponse> savePengguna(@RequestBody Pengguna mPengguna){
+        Pengguna pengguna = new Pengguna(mPengguna.getId(), mPengguna.getNama_pengguna(),mPengguna.getRole(),mPengguna.getKelas(),1);
+        boolean result = penggunaService.save(pengguna);
+        PenggunaResponse penggunaResponse = new PenggunaResponse();
+        if (result) {
+
+            try {
+                penggunaResponse.setmPengguna(pengguna);
+                penggunaResponse.setMessage("Simpan Data Berhasil");
+                penggunaResponse.setStatus(200);
+            } catch (Exception e) {
+                penggunaResponse.setmPengguna(null);
+                penggunaResponse.setMessage("Simpan Data Gagal");
+                penggunaResponse.setStatus(404);
+            }
+        }else {
+            penggunaResponse.setmPengguna(null);
+            penggunaResponse.setMessage("Simpan Data Gagal");
+            penggunaResponse.setStatus(404);
+        }
+        return ResponseEntity.ok(penggunaResponse);
+    }
     @PostMapping("/getPenggunaByNama")
     public ResponseEntity<PenggunaResponse> getPenggunaByNama(@RequestParam(value = "nama") String nama){
         Pengguna pengguna = penggunaService.getPenggunaByNama(nama);
