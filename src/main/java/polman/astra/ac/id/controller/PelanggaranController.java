@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import polman.astra.ac.id.Result;
 import polman.astra.ac.id.model.Pelanggaran;
+import polman.astra.ac.id.model.response.ListPelanggaranResponse;
 import polman.astra.ac.id.services.PelanggaranService;
 
 import javax.servlet.http.HttpServletResponse;
@@ -41,9 +42,20 @@ public class PelanggaranController {
     }
 
     @GetMapping("/getPelanggarans")
-    public List<Pelanggaran> getPelanggarans(HttpServletResponse response) {
+    public ResponseEntity<ListPelanggaranResponse> getPelanggarans(HttpServletResponse response) {
         List<Pelanggaran> Pelanggaran = pelanggaranService.getPelanggarans();
-        return Pelanggaran;
+        ListPelanggaranResponse listPelanggaranResponse = new ListPelanggaranResponse();
+        try {
+            listPelanggaranResponse.setmPelanggaran(Pelanggaran);
+            listPelanggaranResponse.setMessage("Ambil Data Berhasil");
+            listPelanggaranResponse.setStatus(200);
+        } catch (Exception e) {
+            listPelanggaranResponse.setmPelanggaran(null);
+            listPelanggaranResponse.setMessage("Data Kosong");
+            listPelanggaranResponse.setStatus(404);
+        }
+        return ResponseEntity.ok(listPelanggaranResponse);
+
     }
 
     @DeleteMapping("/deletePelanggaran")
