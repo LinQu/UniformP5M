@@ -54,6 +54,54 @@ public class PenggunaController {
         }
         return ResponseEntity.ok(penggunaResponse);
     }
+
+    @PostMapping("/updatePengguna")
+    public ResponseEntity<PenggunaResponse> updatePengguna(@RequestBody Pengguna mPengguna){
+        Pengguna pengguna = new Pengguna(mPengguna.getId(), mPengguna.getNama_pengguna(),mPengguna.getRole(),mPengguna.getKelas(),1);
+        boolean result = penggunaService.update(pengguna);
+        PenggunaResponse penggunaResponse = new PenggunaResponse();
+        if (result) {
+
+            try {
+                penggunaResponse.setmPengguna(pengguna);
+                penggunaResponse.setMessage("Update Data Berhasil");
+                penggunaResponse.setStatus(200);
+            } catch (Exception e) {
+                penggunaResponse.setmPengguna(null);
+                penggunaResponse.setMessage("Update Data Gagal");
+                penggunaResponse.setStatus(404);
+            }
+        }else {
+            penggunaResponse.setmPengguna(null);
+            penggunaResponse.setMessage("Update Data Gagal");
+            penggunaResponse.setStatus(404);
+        }
+        return ResponseEntity.ok(penggunaResponse);
+    }
+
+    @PostMapping("/deletePengguna")
+    public ResponseEntity<PenggunaResponse> deletePengguna(@RequestParam("id") int id){
+
+        boolean result = penggunaService.delete(id);
+        PenggunaResponse penggunaResponse = new PenggunaResponse();
+        if (result) {
+        Pengguna pengguna = penggunaService.getPenggunaById(id);
+            try {
+                penggunaResponse.setmPengguna(pengguna);
+                penggunaResponse.setMessage("Delete Data Berhasil");
+                penggunaResponse.setStatus(200);
+            } catch (Exception e) {
+                penggunaResponse.setmPengguna(null);
+                penggunaResponse.setMessage("Delete Data Gagal");
+                penggunaResponse.setStatus(404);
+            }
+        }else {
+            penggunaResponse.setmPengguna(null);
+            penggunaResponse.setMessage("Delete Data Gagal");
+            penggunaResponse.setStatus(404);
+        }
+        return ResponseEntity.ok(penggunaResponse);
+    }
     @PostMapping("/getPenggunaByNama")
     public ResponseEntity<PenggunaResponse> getPenggunaByNama(@RequestParam(value = "nama") String nama){
         Pengguna pengguna = penggunaService.getPenggunaByNama(nama);

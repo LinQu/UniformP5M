@@ -12,8 +12,37 @@ public class PenggunaService {
     @Autowired
     PenggunaRepository penggunaRepository;
 
+    public Pengguna getPenggunaById(int id){
+        Pengguna Pengguna = penggunaRepository.getPenggunaById(id);
+        return Pengguna;
+    }
+
     public boolean save(Pengguna Pengguna){
         Pengguna result = penggunaRepository.save(Pengguna);
+        boolean isSuccess = true;
+        if(result == null) {
+            isSuccess = false;
+        }
+        return isSuccess;
+    }
+
+    public boolean update(Pengguna penggunaa){
+        Pengguna pengguna = penggunaRepository.getPenggunaById(penggunaa.getId());
+        pengguna.setNama_pengguna(penggunaa.getNama_pengguna());
+        pengguna.setRole(penggunaa.getRole());
+        pengguna.setKelas(penggunaa.getKelas());
+        Pengguna result = penggunaRepository.save(pengguna);
+        boolean isSuccess = true;
+        if(result == null) {
+            isSuccess = false;
+        }
+        return isSuccess;
+    }
+
+    public boolean delete(int id){
+        Pengguna pengguna = penggunaRepository.getPenggunaById(id);
+        pengguna.setStatus(0);
+        Pengguna result = penggunaRepository.save(pengguna);
         boolean isSuccess = true;
         if(result == null) {
             isSuccess = false;
