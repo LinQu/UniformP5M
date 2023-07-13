@@ -11,6 +11,7 @@ import org.springframework.web.client.RestTemplate;
 import polman.astra.ac.id.model.response.AccessTokenResponse;
 import polman.astra.ac.id.model.Mahasiswa;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -74,17 +75,26 @@ public class MahasiswaService {
         try {
             JsonNode root = objectMapper.readTree(jsonResponse);
             if (root.isArray()) {
-                Mahasiswa[] mahasiswaArray = objectMapper.treeToValue(root, Mahasiswa[].class);
-                // Mengubah kelas menjadi 2 huruf terakhir
-                for (Mahasiswa mahasiswa : mahasiswaArray) {
-                    String kelasMahasiswa = mahasiswa.getKelas();
-                    String kelasModified = kelasMahasiswa.substring(kelasMahasiswa.length() - 2);
-                    mahasiswa.setKelas(kelasModified);
+                List<Mahasiswa> mahasiswaList = new ArrayList<>();
+                for (JsonNode jsonNode : root) {
+                    Mahasiswa mahasiswa = new Mahasiswa();
+                    mahasiswa.setNim(jsonNode.get("mhs_id").asText());
+                    mahasiswa.setNama(jsonNode.get("mhs_nama").asText());
+                    mahasiswa.setAngkatan(jsonNode.get("mhs_angkatan").asText());
+                    mahasiswa.setKelas(jsonNode.get("kel_id").asText());
+
+                    // Mengubah kelas menjadi 2 huruf terakhir
+                    String kelasMahasiswa = kelas;
+                    if (kelasMahasiswa.length() >= 2) {
+                        String kelasModified = kelasMahasiswa.substring(kelasMahasiswa.length() - 2);
+                        mahasiswa.setKelas(kelasModified);
+                    }
+
+                    mahasiswaList.add(mahasiswa);
                 }
-                return Arrays.asList(mahasiswaArray);
+                return mahasiswaList;
             }
         } catch (JsonProcessingException e) {
-
             e.printStackTrace();
         }
         return null;
