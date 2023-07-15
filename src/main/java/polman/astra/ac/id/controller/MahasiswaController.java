@@ -15,7 +15,7 @@ public class MahasiswaController {
     @Autowired
     MahasiswaService mahasiswaService;
 
-    @GetMapping("/getMahasiswaByKelas")
+    @PostMapping("/getMahasiswaByKelas")
     public ResponseEntity<ListMahasiswaResponse> getMahasiswaByKelas(@RequestParam("kelas") String kelas){
         List<Mahasiswa> mahasiswaList = mahasiswaService.getListMahasiswaBykelas(kelas);
         ListMahasiswaResponse listMahasiswaResponse = new ListMahasiswaResponse();
