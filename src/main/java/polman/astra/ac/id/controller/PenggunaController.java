@@ -16,7 +16,7 @@ public class PenggunaController {
     @Autowired
     PenggunaService penggunaService;
     @GetMapping("/getPengguna")
-    public ResponseEntity<ListPenggunaResponse> getPengguna(HttpServletResponse response){
+    public ResponseEntity<ListPenggunaResponse> getPengguna(){
         List<Pengguna> pengguna = penggunaService.getAllPengguna();
         ListPenggunaResponse listPenggunaResponse = new ListPenggunaResponse();
         try{
@@ -79,8 +79,8 @@ public class PenggunaController {
         return ResponseEntity.ok(penggunaResponse);
     }
 
-    @PostMapping("/deletePengguna")
-    public ResponseEntity<PenggunaResponse> deletePengguna(@RequestParam("id") int id){
+    @DeleteMapping("/deletePengguna/{id}")
+    public ResponseEntity<PenggunaResponse> deletePengguna(@PathVariable("id") int id){
 
         boolean result = penggunaService.delete(id);
         PenggunaResponse penggunaResponse = new PenggunaResponse();
