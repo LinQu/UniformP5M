@@ -31,6 +31,7 @@ public class PenggunaService {
         pengguna.setNama_pengguna(penggunaa.getNama_pengguna());
         pengguna.setRole(penggunaa.getRole());
         pengguna.setKelas(penggunaa.getKelas());
+        pengguna.setStatus(penggunaa.getStatus());
         Pengguna result = penggunaRepository.save(pengguna);
         boolean isSuccess = true;
         if(result == null) {
