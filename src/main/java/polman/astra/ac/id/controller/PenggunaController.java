@@ -61,7 +61,6 @@ public class PenggunaController {
         boolean result = penggunaService.update(pengguna);
         PenggunaResponse penggunaResponse = new PenggunaResponse();
         if (result) {
-
             try {
                 penggunaResponse.setmPengguna(pengguna);
                 penggunaResponse.setMessage("Update Data Berhasil");

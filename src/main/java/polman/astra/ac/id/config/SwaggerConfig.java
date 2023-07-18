@@ -14,10 +14,11 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 public class SwaggerConfig {
     @Bean
     public Docket api() {
+        //go to controller
         return new Docket(DocumentationType.SWAGGER_2)
                 .select()
-                .apis(RequestHandlerSelectors.any())
-//                .apis(RequestHandlerSelectors.basePackage("polman.astra.id.controller"))
+                //.apis(RequestHandlerSelectors.any())
+                .apis(RequestHandlerSelectors.basePackage("polman.astra.ac.id.controller"))
                 .paths(PathSelectors.any())
                 .build()
                 .apiInfo(metaInfo());
