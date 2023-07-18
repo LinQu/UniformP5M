@@ -55,7 +55,7 @@ public class PenggunaController {
         return ResponseEntity.ok(penggunaResponse);
     }
 
-    @PostMapping("/updatePengguna")
+    @PutMapping("/updatePengguna")
     public ResponseEntity<PenggunaResponse> updatePengguna(@RequestBody Pengguna mPengguna){
         Pengguna pengguna = new Pengguna(mPengguna.getId(), mPengguna.getNama_pengguna(),mPengguna.getRole(),mPengguna.getKelas(),mPengguna.getStatus());
         boolean result = penggunaService.update(pengguna);
