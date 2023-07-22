@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div>   <br>
+  <br>
+  <br>
+  <form th:action="@{/saveAbsenPage}" th:object="${AbsenObject}" method="post">
+    <table>
+      <tr>
+        <td><label for="nama">Nama</label></td>
+        <td><input class="form-control" name="nama" id="nama" th:field="*{nim}"></td>
+      </tr>
+      <tr>
+        <td><label for="jam_minus">Jam Minus</label></td>
+        <td><input type="datetime-local" class="form-control" name="jam_minus" id="jam_minus" th:field="*{waktu}"></td>
+      </tr>
+
+      <tr>
+        <td></td>
+        <td><button  class="btn btn-success">Save!</button>
+          <button type="button" class="btn btn-danger" onclick="cancelUpdate()">Batal</button>
+        </td>
+
+      </tr>
+    </table>
+
+  </form>
+  <script>
+    function cancelUpdate() {
+      window.location.href = "/index.html";
+    }
+  </script>
+</div>
+</body>
+</html>

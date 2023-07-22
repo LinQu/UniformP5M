@@ -1,6 +1,7 @@
 package polman.astra.ac.id.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.sql.Date;
@@ -19,6 +20,7 @@ public class Absen {
     private String nim;
 
     @Column(name = "waktu")
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private LocalDateTime waktu;
 
     public Absen() {
