@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import polman.astra.ac.id.Result;
 import polman.astra.ac.id.model.Pelanggaran;
 import polman.astra.ac.id.model.response.ListPelanggaranResponse;
+import polman.astra.ac.id.model.response.PelanggaranResponse;
 import polman.astra.ac.id.services.PelanggaranService;
 
 import javax.servlet.http.HttpServletResponse;
@@ -23,16 +24,27 @@ public class PelanggaranController {
     PelanggaranService pelanggaranService;
 
 
-    @PostMapping(value = "/savePelanggaran", produces = "application/json")
-    public Result save(HttpServletResponse response, @RequestBody Pelanggaran PelanggaranParam) {
-        Pelanggaran Pelanggaran = new Pelanggaran(PelanggaranParam.getId(), PelanggaranParam.getNama(), PelanggaranParam.getJam_minus());
+        @PostMapping(value = "/savePelanggaran", produces = "application/json")
+    public ResponseEntity<PelanggaranResponse> save(@RequestBody Pelanggaran PelanggaranParam) {
+        Pelanggaran Pelanggaran = new Pelanggaran(PelanggaranParam.getId(), PelanggaranParam.getNama(), PelanggaranParam.getJam_minus(),1);
         boolean isSuccess = pelanggaranService.save(Pelanggaran);
+        PelanggaranResponse pelanggaranResponse = new PelanggaranResponse();
         if (isSuccess) {
-            return new Result(500, "Success");
+            try{
+                pelanggaranResponse.setmPelanggaran(Pelanggaran);
+                pelanggaranResponse.setMessage("Simpan Data Berhasil");
+                pelanggaranResponse.setStatus(200);
+            }catch (Exception e){
+                pelanggaranResponse.setmPelanggaran(null);
+                pelanggaranResponse.setMessage("Simpan Data Gagal");
+                pelanggaranResponse.setStatus(404);
+            }
         } else {
-            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            return new Result(200, "Fail");
+            pelanggaranResponse.setmPelanggaran(null);
+            pelanggaranResponse.setMessage("Simpan Data Gagal");
+            pelanggaranResponse.setStatus(404);
         }
+        return ResponseEntity.ok(pelanggaranResponse);
     }
 
     @GetMapping("/getPelanggaran")
@@ -58,10 +70,26 @@ public class PelanggaranController {
 
     }
 
-    @DeleteMapping("/deletePelanggaran")
-    public void deletePelanggaran(HttpServletResponse response, @RequestParam("id_pelanggaran") Integer id) {
-        pelanggaranService.deletePelanggaran(id);
-
+    @DeleteMapping("/deletePelanggaran/{id}")
+    public ResponseEntity<PelanggaranResponse> deletePelanggaran(@PathVariable("id") Integer id) {
+        boolean result = pelanggaranService.deletePelanggaran(id);
+        PelanggaranResponse pelanggaranResponse = new PelanggaranResponse();
+        if (result) {
+            try {
+                pelanggaranResponse.setmPelanggaran(null);
+                pelanggaranResponse.setMessage("Hapus Data Berhasil");
+                pelanggaranResponse.setStatus(200);
+            } catch (Exception e) {
+                pelanggaranResponse.setmPelanggaran(null);
+                pelanggaranResponse.setMessage("Hapus Data Gagal");
+                pelanggaranResponse.setStatus(404);
+            }
+        } else {
+            pelanggaranResponse.setmPelanggaran(null);
+            pelanggaranResponse.setMessage("Hapus Data Gagal");
+            pelanggaranResponse.setStatus(404);
+        }
+        return ResponseEntity.ok(pelanggaranResponse);
     }
     @GetMapping("/editPelanggaran")
     public ResponseEntity<Void> editPelanggaran(HttpServletResponse response, @RequestParam("id_pelanggaran") Integer id) {

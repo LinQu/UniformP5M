@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import polman.astra.ac.id.model.Absen;
+import polman.astra.ac.id.model.KehadiranPerBulanDTO;
 import polman.astra.ac.id.model.response.AbsenResponse;
 import polman.astra.ac.id.model.response.ListAbsenResponse;
 import polman.astra.ac.id.services.AbsenService;
@@ -59,4 +60,31 @@ public class AbsenController {
         List<Object[]> listAbsenResponse = absenService.getHistoryAbsenByNim(nim);
         return ResponseEntity.ok(listAbsenResponse);
     }
+
+    @GetMapping("/getAbsenByNimAndMonth")
+    public ResponseEntity<List<Object[]>> getAbsenByNimAndMonth(@RequestParam(name = "nim") String nim,
+                                                                @RequestParam(name = "month") int month,
+                                                                @RequestParam(name = "year") int year){
+        List<Object[]> listAbsenResponse = absenService.getHistoryAbsenByNimAndMonth(nim, month, year);
+        return ResponseEntity.ok(listAbsenResponse);
+    }
+
+
+    @GetMapping("/{nim}/persentase")
+    public List<KehadiranPerBulanDTO> getKehadiranPersentasePerBulan(@PathVariable String nim) {
+        return absenService.getKehadiranPersentasePerBulan(nim);
+    }
+
+    @GetMapping("/{nim}/persentaseBulan")
+    public KehadiranPerBulanDTO getKehadiranPersentasePerBulan(@PathVariable String nim,
+                                                                     @RequestParam int year,
+                                                                     @RequestParam int month) {
+        return absenService.getKehadiranPersentasePerBulan(nim, year, month);
+    }
+
+    @GetMapping("/{nim}/listHistoryBulan")
+    public List<Object[]> getHistoryListMonthByNim(@PathVariable String nim){
+        return absenService.getHistoryListMonthByNim(nim);
+    }
+
 }

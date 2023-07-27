@@ -36,9 +36,15 @@ public class PelanggaranService {
         return Pelanggaran;
     }
 
-    @Transactional
-    public void deletePelanggaran(Integer id) {
-        pelanggaranRepository.deletePelanggaranById(id);
+    public boolean deletePelanggaran(Integer id) {
+        Pelanggaran pelanggaran =  pelanggaranRepository.getPelanggaranById(id);
+        pelanggaran.setStatus(0);
+        Pelanggaran result = pelanggaranRepository.save(pelanggaran);
+        boolean isSuccess = true;
+        if(result == null) {
+            isSuccess = false;
+        }
+        return isSuccess;
     }
 
 
