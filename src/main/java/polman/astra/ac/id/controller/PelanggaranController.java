@@ -75,8 +75,9 @@ public class PelanggaranController {
         boolean result = pelanggaranService.deletePelanggaran(id);
         PelanggaranResponse pelanggaranResponse = new PelanggaranResponse();
         if (result) {
+            Pelanggaran pelanggaran = pelanggaranService.getPelanggaran(id);
             try {
-                pelanggaranResponse.setmPelanggaran(null);
+                pelanggaranResponse.setmPelanggaran(pelanggaran);
                 pelanggaranResponse.setMessage("Hapus Data Berhasil");
                 pelanggaranResponse.setStatus(200);
             } catch (Exception e) {
@@ -100,8 +101,26 @@ public class PelanggaranController {
 
 
     @PutMapping("/updatePelanggaran")
-    public void updatePelanggaran(HttpServletResponse response, @RequestParam("id_pelanggaran") Integer id, @RequestParam("nama_pelanggaran") String nama, @RequestParam("jam_minus") Integer jamMinus) {
-        pelanggaranService.updatePelanggaran(id, nama, jamMinus);
+    public ResponseEntity<PelanggaranResponse> updatePelanggaran(@RequestBody Pelanggaran pelanggaranParam) {
+        Pelanggaran pelanggaran = new Pelanggaran(pelanggaranParam.getId(),pelanggaranParam.getNama(),pelanggaranParam.getJam_minus(),1);
+        boolean isSucces = pelanggaranService.updatePelanggaran(pelanggaran);
+        PelanggaranResponse pelanggaranResponse = new PelanggaranResponse();
+        if(isSucces){
+            try{
+                pelanggaranResponse.setmPelanggaran(pelanggaran);
+                pelanggaranResponse.setMessage("Update Data Berhasil");
+                pelanggaranResponse.setStatus(200);
+            }catch (Exception e){
+                pelanggaranResponse.setmPelanggaran(null);
+                pelanggaranResponse.setMessage("Update Data Berhasil");
+                pelanggaranResponse.setStatus(404);
+            }
+        }else {
+            pelanggaranResponse.setmPelanggaran(null);
+            pelanggaranResponse.setMessage("Update Data Berhasil");
+            pelanggaranResponse.setStatus(404);
+        }
+        return ResponseEntity.ok(pelanggaranResponse);
 
     }
     @GetMapping("/Pelanggaran/report/{format}")    public String generateReport (@PathVariable String format) throws JRException, FileNotFoundException {

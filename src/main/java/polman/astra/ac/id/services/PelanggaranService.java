@@ -54,8 +54,17 @@ public class PelanggaranService {
     }
 
     @Transactional
-    public void updatePelanggaran(Integer id_pelanggaran, String nama_pelanggaran, Integer jam_minus) {
-        pelanggaranRepository.updatePelanggaranById(id_pelanggaran, nama_pelanggaran, jam_minus);
+    public boolean updatePelanggaran(Pelanggaran pelanggaranParam) {
+        Pelanggaran pelanggaran = pelanggaranRepository.getPelanggaranById(pelanggaranParam.getId());
+        pelanggaran.setNama(pelanggaranParam.getNama());
+        pelanggaran.setJam_minus(pelanggaranParam.getJam_minus());
+        pelanggaran.setStatus(pelanggaranParam.getStatus());
+        Pelanggaran result = pelanggaranRepository.save(pelanggaran);
+        boolean isucces = true;
+        if(result == null){
+            isucces = false;
+        }return isucces;
+
     }
 
     public String exportReport(String reportFormat) throws FileNotFoundException, JRException {

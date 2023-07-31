@@ -15,6 +15,7 @@ public interface PelanggaranRepository extends CrudRepository<Pelanggaran, Integ
     @Query("SELECT m FROM Pelanggaran m")
     public List<Pelanggaran> getPelanggarans();
 
+
     @Modifying
     @Query("DELETE from Pelanggaran m WHERE m.id = :id")
     public void deletePelanggaranById(@Param("id") Integer id);
